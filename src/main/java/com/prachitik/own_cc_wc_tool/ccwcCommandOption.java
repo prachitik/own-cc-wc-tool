@@ -1,6 +1,9 @@
 package com.prachitik.own_cc_wc_tool;
 
 public enum ccwcCommandOption {
+    /**
+     * These are the available options for this wc command
+     */
     COUNT_BYTES("-c", "Outputs the number of bytes in a file"),
     COUNT_LINES("-l", "Outputs the number of lines in a file"),
     COUNT_WORDS("-w", "Outputs the number of words in a file"),
@@ -8,8 +11,6 @@ public enum ccwcCommandOption {
 
     private final String cmdOpt;
     private final String description;
-
-
 
     ccwcCommandOption(String cmdOpt, String description) {
         this.cmdOpt = cmdOpt;

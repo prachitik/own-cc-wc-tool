@@ -8,7 +8,11 @@ import java.nio.file.Files;
 
 @Service
 public class ccwcService {
-
+    /**
+     * Counts the number of bytes in input file
+     * @param file
+     * @return
+     */
     public int getCountBytes(String file) {
         int byteCount = 0;
         try{
@@ -26,6 +30,11 @@ public class ccwcService {
         return byteCount;
     }
 
+    /**
+     * Counts the number of lines in input file
+     * @param filename
+     * @return
+     */
     public int getCountLines(String filename){
         int linecount = 0;
         try{
@@ -44,6 +53,11 @@ public class ccwcService {
 
     }
 
+    /**
+     * Counts the number of words in input file
+     * @param filename
+     * @return
+     */
     public int getCountWords(String filename){
         int wordcount = 0;
 
@@ -59,7 +73,6 @@ public class ccwcService {
                         wordcount++;
                     }
                 }
-                //wordcount += words.length;
             }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -70,6 +83,11 @@ public class ccwcService {
         return wordcount;
     }
 
+    /**
+     * Counts the number of characters in input file
+     * @param filename
+     * @return
+     */
     public int getCountChars(String filename){
         int charcount = 0;
         try{
@@ -87,6 +105,11 @@ public class ccwcService {
         return charcount;
     }
 
+    /**
+     * Counts the number of lines in standard input from user
+     * @param input
+     * @return
+     */
     public int getCountLinesStdInput(String input){
         int linecount = 0;
         try{
@@ -101,6 +124,11 @@ public class ccwcService {
         return linecount;
     }
 
+    /**
+     * Counts the number of words in standard input from user
+     * @param input
+     * @return
+     */
     public int getCountWordsStdInput(String input) {
         int wordscount = 0;
 
@@ -115,6 +143,11 @@ public class ccwcService {
         return wordscount;
     }
 
+    /**
+     * Counts the number of bytes in standard input from user
+     * @param input
+     * @return
+     */
     public int getCountBytesStdInput(String input) {
         int bytescount = 0;
 
@@ -129,6 +162,11 @@ public class ccwcService {
         return bytescount;
     }
 
+    /**
+     * Counts the number of characters in standard input from user
+     * @param input
+     * @return
+     */
     public int getCountCharsStdInput(String input){
         int charcount = 0;
         try{

@@ -1,17 +1,13 @@
 package com.prachitik.own_cc_wc_tool;
 
-import com.prachitik.own_cc_wc_tool.service.CommandProcessorService;
 import com.prachitik.own_cc_wc_tool.service.ccwcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 
 import java.util.Scanner;
 
@@ -20,9 +16,6 @@ public class OwnCcWcToolApplication implements CommandLineRunner {
 
 	@Autowired
 	ccwcService ccwcservice;
-
-//	@Autowired
-//	private CommandProcessorService commandProcessorService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(OwnCcWcToolApplication.class, args);
@@ -34,17 +27,19 @@ public class OwnCcWcToolApplication implements CommandLineRunner {
 		boolean standardInput = true;
 		String filename = null;
 		processCommand(standardInput, filename, args);
-		//commandProcessorService.processCommand(args);
-
-
 	}
 
+	/**
+	 * Processes wc command based on the options and arguments passed to it
+	 * @param standardInput
+	 * @param filename
+	 * @param args
+	 * @throws IOException
+	 */
 	public void processCommand (boolean standardInput, String filename, String... args) throws IOException{
-		/** Check if file is passed as an argument
-		 *
-		 */
-		System.out.println(filename);
-		System.out.println(standardInput);
+		//Check if file is passed as an argument
+//		System.out.println(filename);
+//		System.out.println(standardInput);
 
 		CommandOptions commandOptions = new CommandOptions();
 		for(String arg : args){
@@ -58,11 +53,7 @@ public class OwnCcWcToolApplication implements CommandLineRunner {
 				commandOptions.getOptions().add(option);
 			}
 		}
-
-		/**
-		 * Check for filename value is present and standardInput flag is not true
-		 */
-
+		//Check for filename value is present and standardInput flag is not true
 		if(!standardInput && filename != null){
 			readFromFile(commandOptions, filename);
 		}else{
@@ -71,6 +62,11 @@ public class OwnCcWcToolApplication implements CommandLineRunner {
 
 	}
 
+	/**
+	 * Reads standard input from user while executing the command as command does not contain file input
+	 * @param options
+	 * @throws IOException
+	 */
 	public void readStandardInput(CommandOptions options) throws IOException {
 
 		System.out.println("Enter your input now.. and please end your input with \"EOF\" on new line");
@@ -86,22 +82,8 @@ public class OwnCcWcToolApplication implements CommandLineRunner {
 			inputBuilder.append("\n");
 		}
 
-//		try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
-//			// Reading input until EOF is encountered
-//			String line;
-//			while ((line = reader.readLine()) != null) {
-//				if (line.trim().equalsIgnoreCase("EOF")) {
-//					break;
-//				}
-//				inputBuilder.append(line);
-//				inputBuilder.append("\n");
-//			}
-//			//System.in.close();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 		String input = inputBuilder.toString();
-		//
+		// Check if command options are passed in as arguments
 		if(options.getOptions().size() != 0){
 			readStandardInputWithOptions(input, options);
 		}else{
@@ -109,7 +91,15 @@ public class OwnCcWcToolApplication implements CommandLineRunner {
 		}
 
 	}
-//
+
+	/**Read input data from file.
+	 * If command options are provided in command then apply them
+	 * otherwise apply default options
+	 * @param options
+	 * @param filename
+	 * @throws FileNotFoundException
+	 */
+
 	public void readFromFile(CommandOptions options, String filename) throws FileNotFoundException {
 		System.out.println("Your file is being processed..");
 		if(options == null || options.getOptions().size() == 0){
@@ -120,7 +110,12 @@ public class OwnCcWcToolApplication implements CommandLineRunner {
 		}
 
 	}
-//
+
+	/**
+	 * Reads input from a file and applies default wc options
+	 * @param filename
+	 * @throws FileNotFoundException
+	 */
 	public void readFromFileDefaultOptions(String filename) throws FileNotFoundException {
 		Result result = new Result();
 		result.setLinesCount(ccwcservice.getCountLines(filename));
@@ -128,7 +123,13 @@ public class OwnCcWcToolApplication implements CommandLineRunner {
 		result.setBytesCount(ccwcservice.getCountBytes(filename));
 		displayOutput(result, filename);
 	}
-//
+
+	/**
+	 * Reads input from a file and applies passed in wc command options
+	 * @param options
+	 * @param filename
+	 * @throws FileNotFoundException
+	 */
 	public void readFromFileWithOptions(CommandOptions options, String filename) throws FileNotFoundException {
 		Result result = new Result();
 		for(ccwcCommandOption option: options.getOptions()){
@@ -142,7 +143,13 @@ public class OwnCcWcToolApplication implements CommandLineRunner {
 		}
 		displayOutput(result, filename);
 	}
-//
+
+	/**
+	 * Reads from standard input from user as filename was not passed in command
+	 * @param input
+	 * @param options
+	 * @throws IOException
+	 */
 	public void readStandardInputWithOptions(String input, CommandOptions options) throws IOException {
 		Result result = new Result();
 		for(ccwcCommandOption option: options.getOptions()){
@@ -161,17 +168,27 @@ public class OwnCcWcToolApplication implements CommandLineRunner {
 		}
 		displayOutput(result, null);
 	}
-//
-public void readStandardInputDefaultOptions(String input) throws IOException {
-	Result result = new Result();
-	result.setLinesCount(ccwcservice.getCountLinesStdInput(input));
-	result.setWordsCount(ccwcservice.getCountWordsStdInput(input));
-	result.setBytesCount(ccwcservice.getCountBytesStdInput(input));
-	displayOutput(result, null);
 
-}
-//
-//
+	/**
+	 * Reads from standard input from user as filename was not passed in command.
+	 * Also applies default wc command options
+	 * @param input
+	 * @throws IOException
+	 */
+	public void readStandardInputDefaultOptions(String input) throws IOException {
+		Result result = new Result();
+		result.setLinesCount(ccwcservice.getCountLinesStdInput(input));
+		result.setWordsCount(ccwcservice.getCountWordsStdInput(input));
+		result.setBytesCount(ccwcservice.getCountBytesStdInput(input));
+		displayOutput(result, null);
+
+	}
+
+	/**
+	 * Displays the output of wc command
+	 * @param result
+	 * @param filename
+	 */
 	public void displayOutput(Result result, String filename){
 		StringBuilder output = new StringBuilder();
 		int countOptions = 0;

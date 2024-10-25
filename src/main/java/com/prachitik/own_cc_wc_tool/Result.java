@@ -6,9 +6,6 @@ public class Result {
     private int bytesCount;
     private int charsCount;
 
-    //String file;
-
-
     public Result() {
         this.linesCount = -1;
         this.wordsCount = -1;
